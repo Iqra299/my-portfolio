@@ -113,7 +113,7 @@
     .menu-toggle {
       display: none;
       font-size: 28px;
-      color: var(--white);
+      color: black;  /* changed to black */
       cursor: pointer;
       user-select: none;
       line-height: 1;
@@ -684,16 +684,19 @@
     .footer-download-btn {
       display: inline-block;
       background: var(--teal);
-      color: var(--navy);
+      color: black;  /* text color black */
       font-weight: 700;
       font-size: 0.9rem;
-      padding: 12px 28px;
+      padding: 10px 18px;   /* reduced width */
       border-radius: 40px;
       text-decoration: none;
       transition: all 0.3s ease;
       border: none;
       cursor: pointer;
       letter-spacing: 0.3px;
+      width: auto;          /* ensures it doesn't stretch */
+      min-width: unset;
+      max-width: 100%;
     }
     .footer-download-btn:hover {
       background: var(--teal2);
@@ -713,7 +716,7 @@
       .btn-primary, .btn-outline { text-align: center; }
       .footer-inner { flex-direction: column; align-items: center; text-align: center; }
       .footer-social { justify-content: center; }
-      .footer-download-btn { width: 100%; text-align: center; }
+      .footer-download-btn { width: auto; }  /* keep width auto on mobile */
     }
     @media (max-width: 480px) {
       .nav-logo { font-size: 1.1rem; }
@@ -922,7 +925,7 @@
   <div class="footer-inner">
     <div class="footer-col">
       <h4>Iqra Waseem</h4>
-      <p>Frontend-focused Web Developer at Kaab Technology, Karachi.</p>
+      <p>Frontend-focused Web Developer at Kaab Technology, Karachi.</p> <br><br>
        <a href="Resume_.pdf" download class="footer-download-btn">📄 Download CV</a>
     </div>
     <div class="footer-col">
