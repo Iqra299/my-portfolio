@@ -29,7 +29,60 @@
       font-family: 'Inter', sans-serif;
       font-size: 16px;
       line-height: 1.7;
+      overflow-x: hidden;
     }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes slideInLeft {
+      0% { opacity: 0; transform: translateX(-40px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      0% { opacity: 0; transform: translateX(40px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(62,207,207,0.3); }
+      70% { box-shadow: 0 0 0 12px rgba(62,207,207,0); }
+      100% { box-shadow: 0 0 0 0 rgba(62,207,207,0); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+    .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+    .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+    .animate-on-scroll.delay-4 { transition-delay: 0.4s; }
+    .animate-on-scroll.delay-5 { transition-delay: 0.5s; }
 
     /* ── NAV ── */
     nav {
@@ -41,13 +94,16 @@
       padding: 0 5%;
       height: 70px;
       gap: 2rem;
+      animation: fadeIn 0.6s ease;
     }
     .nav-logo {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700; font-size: 1.3rem;
       color: var(--teal); letter-spacing: 0.5px;
       margin-right: 1rem;
+      transition: transform 0.3s ease;
     }
+    .nav-logo:hover { transform: scale(1.05); }
     .nav-links {
       display: flex; gap: 2rem; list-style: none;
       align-items: center;
@@ -56,9 +112,22 @@
     .nav-links a {
       color: var(--muted); text-decoration: none;
       font-size: 0.9rem; font-weight: 500;
-      transition: color 0.2s;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+      position: relative;
     }
-    .nav-links a:hover { color: var(--teal); }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--teal);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: var(--teal);
+      transform: translateY(-1px);
+    }
+    .nav-links a:hover::after { width: 100%; }
     .nav-actions {
       display: flex; gap: 1rem; align-items: center;
       margin-left: 1rem;
@@ -68,11 +137,16 @@
       font-weight: 700; font-size: 0.8rem;
       padding: 8px 18px; border-radius: 40px;
       text-decoration: none; border: none;
-      transition: background 0.2s, transform 0.15s;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       letter-spacing: 0.3px;
       white-space: nowrap;
+      animation: pulseGlow 2.5s infinite;
     }
-    .btn-cv:hover { background: var(--teal2); transform: translateY(-1px); }
+    .btn-cv:hover {
+      background: var(--teal2);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(62,207,207,0.3);
+    }
 
     /* ── HERO ── */
     #hero {
@@ -84,6 +158,7 @@
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
       background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(62,207,207,0.07) 0%, transparent 70%);
+      animation: float 8s ease-in-out infinite;
     }
     .hero-content { position: relative; z-index: 1; max-width: 680px; }
     .hero-badge {
@@ -95,6 +170,7 @@
       letter-spacing: 1.5px; text-transform: uppercase;
       padding: 6px 14px; border-radius: 100px;
       margin-bottom: 1.5rem;
+      animation: slideInLeft 0.8s ease;
     }
     h1 {
       font-family: 'Space Grotesk', sans-serif;
@@ -102,29 +178,48 @@
       font-weight: 700; line-height: 1.05;
       letter-spacing: -1px;
       margin-bottom: 1.2rem;
+      animation: fadeUp 0.9s ease 0.1s both;
     }
-    h1 span { color: var(--teal); }
+    h1 span {
+      color: var(--teal);
+      display: inline-block;
+      animation: float 4s ease-in-out infinite;
+    }
     .hero-sub {
       font-size: 1.1rem; color: var(--muted);
       max-width: 520px; margin-bottom: 2.5rem;
+      animation: fadeUp 0.9s ease 0.2s both;
     }
-    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp 0.9s ease 0.3s both;
+    }
     .btn-primary {
       background: var(--teal); color: var(--navy);
       font-weight: 700; font-size: 0.95rem;
       padding: 12px 28px; border-radius: 8px;
       text-decoration: none; border: none; cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .btn-primary:hover { background: var(--teal2); transform: translateY(-1px); }
+    .btn-primary:hover {
+      background: var(--teal2);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(62,207,207,0.25);
+    }
     .btn-outline {
       background: transparent;
       border: 1.5px solid var(--border);
       color: var(--white); font-size: 0.95rem; font-weight: 500;
       padding: 12px 28px; border-radius: 8px;
-      text-decoration: none; transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-outline:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(62,207,207,0.1);
+    }
 
     /* ── SECTIONS ── */
     section { padding: 90px 5%; }
@@ -152,7 +247,12 @@
       grid-template-columns: 1fr 1fr;
       gap: 4rem; align-items: start;
     }
-    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+    .about-text p:hover { transform: translateX(4px); }
     .about-text p strong { color: var(--white); }
     .about-stats {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -163,12 +263,22 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.2rem 1.4rem;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: default;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--teal);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
     }
     .stat-number {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 2rem; font-weight: 700;
       color: var(--teal);
+      transition: transform 0.3s ease;
+      display: inline-block;
     }
+    .stat-card:hover .stat-number { transform: scale(1.08); }
     .stat-label { font-size: 0.85rem; color: var(--muted); }
 
     /* ── SKILLS ── */
@@ -182,19 +292,35 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.6rem;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      cursor: default;
+    }
+    .skill-category:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: var(--teal);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
     }
     .skill-category h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.85rem; font-weight: 600;
       letter-spacing: 1px; text-transform: uppercase;
       color: var(--teal); margin-bottom: 1rem;
+      transition: transform 0.3s ease;
     }
+    .skill-category:hover h3 { transform: translateX(4px); }
     .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .tag {
       background: rgba(62,207,207,0.08);
       border: 1px solid rgba(62,207,207,0.2);
       color: var(--white); font-size: 0.82rem;
       padding: 4px 12px; border-radius: 100px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    .tag:hover {
+      background: rgba(62,207,207,0.2);
+      transform: translateY(-2px) scale(1.05);
+      border-color: var(--teal);
     }
 
     /* ── PROJECTS ── */
@@ -209,12 +335,13 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      transition: border-color 0.25s, transform 0.2s;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       display: flex; flex-direction: column;
     }
     .project-card:hover {
       border-color: var(--teal);
-      transform: translateY(-3px);
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
     }
     .project-media {
       width: 100%; height: 180px;
@@ -226,24 +353,24 @@
     .project-media img {
       width: 100%; height: 100%; object-fit: cover;
       display: block;
+      transition: transform 0.5s ease;
     }
-    .project-media .media-placeholder {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 0.5rem; color: var(--muted); font-size: 0.8rem;
-      text-align: center; padding: 1rem;
-    }
+    .project-card:hover .project-media img { transform: scale(1.04); }
     .project-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
     .project-type {
       font-size: 0.7rem; font-weight: 600;
       letter-spacing: 1.5px; text-transform: uppercase;
       color: var(--teal); margin-bottom: 0.4rem;
+      transition: transform 0.3s ease;
     }
+    .project-card:hover .project-type { transform: translateX(4px); }
     .project-body h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.1rem; font-weight: 700;
       margin-bottom: 0.3rem;
+      transition: color 0.3s ease;
     }
+    .project-card:hover .project-body h3 { color: var(--teal); }
     .project-body p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.8rem; flex: 1; }
     .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
     .project-links { display: flex; gap: 0.75rem; margin-top: auto; flex-wrap: wrap; }
@@ -251,18 +378,26 @@
       font-size: 0.78rem; font-weight: 600;
       padding: 6px 14px; border-radius: 6px;
       text-decoration: none; cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .link-live {
       background: var(--teal); color: var(--navy);
     }
-    .link-live:hover { background: var(--teal2); }
+    .link-live:hover {
+      background: var(--teal2);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 6px 20px rgba(62,207,207,0.25);
+    }
     .link-github {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--white);
     }
-    .link-github:hover { border-color: var(--teal); color: var(--teal); }
+    .link-github:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-2px);
+    }
 
     /* ── EXPERIENCE ── */
     .timeline { max-width: 720px; }
@@ -272,7 +407,9 @@
       gap: 2rem;
       margin-bottom: 3rem;
       position: relative;
+      transition: all 0.3s ease;
     }
+    .timeline-item:hover { transform: translateX(6px); }
     .timeline-item::before {
       content: '';
       position: absolute;
@@ -290,13 +427,20 @@
       width: 14px; height: 14px;
       background: var(--teal); border-radius: 50%;
       border: 2px solid var(--navy);
+      transition: all 0.3s ease;
+    }
+    .timeline-item:hover .timeline-dot {
+      transform: scale(1.3);
+      box-shadow: 0 0 20px rgba(62,207,207,0.4);
     }
     .timeline-content { padding-left: 1.5rem; }
     .timeline-content h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 1.05rem; font-weight: 700;
       margin-bottom: 0.2rem;
+      transition: color 0.3s ease;
     }
+    .timeline-item:hover .timeline-content h3 { color: var(--teal); }
     .timeline-company { color: var(--teal); font-size: 0.88rem; margin-bottom: 0.7rem; }
     .timeline-content ul {
       list-style: none; padding: 0;
@@ -305,12 +449,19 @@
       color: var(--muted); font-size: 0.9rem;
       padding: 0.2rem 0 0.2rem 1rem;
       position: relative;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    .timeline-content ul li:hover {
+      transform: translateX(4px);
+      color: var(--white);
     }
     .timeline-content ul li::before {
       content: '→';
       position: absolute; left: 0;
       color: var(--teal); font-size: 0.8rem;
+      transition: transform 0.3s ease;
     }
+    .timeline-content ul li:hover::before { transform: translateX(4px); }
 
     /* ── EDUCATION ── */
     #education { background: var(--navy2); }
@@ -324,12 +475,20 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.5rem;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .edu-card:hover {
+      transform: translateY(-5px) scale(1.01);
+      border-color: var(--teal);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
     }
     .edu-card .degree {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700; font-size: 1rem;
       margin-bottom: 0.3rem;
+      transition: color 0.3s ease;
     }
+    .edu-card:hover .degree { color: var(--teal); }
     .edu-card .institution { color: var(--teal); font-size: 0.88rem; margin-bottom: 0.3rem; }
     .edu-card .period { color: var(--muted); font-size: 0.82rem; }
 
@@ -344,6 +503,12 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 2.5rem 2rem;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--teal);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     .contact-links {
       display: flex; justify-content: center;
@@ -356,10 +521,20 @@
       border-radius: 8px;
       padding: 10px 18px;
       color: var(--white); text-decoration: none;
-      font-size: 0.9rem; transition: border-color 0.2s;
+      font-size: 0.9rem;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .contact-item:hover { border-color: var(--teal); color: var(--teal); }
-    .contact-item svg { flex-shrink: 0; }
+    .contact-item:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(62,207,207,0.15);
+    }
+    .contact-item svg {
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .contact-item:hover svg { transform: scale(1.15); }
 
     /* ── FOOTER ── */
     footer {
@@ -376,7 +551,9 @@
     }
     .footer-col {
       flex: 1 1 220px;
+      transition: transform 0.3s ease;
     }
+    .footer-col:hover { transform: translateY(-2px); }
     .footer-col h4 {
       font-family: 'Space Grotesk', sans-serif;
       color: var(--teal);
@@ -390,17 +567,25 @@
       text-decoration: none;
       display: block;
       margin-bottom: 0.3rem;
+      transition: all 0.3s ease;
     }
-    .footer-col a:hover { color: var(--teal); }
+    .footer-col a:hover {
+      color: var(--teal);
+      transform: translateX(4px);
+    }
     .footer-social {
       display: flex; gap: 1rem;
       margin-top: 0.5rem;
     }
     .footer-social a {
       color: var(--muted);
-      transition: color 0.2s;
+      transition: all 0.3s ease;
+      display: inline-block;
     }
-    .footer-social a:hover { color: var(--teal); }
+    .footer-social a:hover {
+      color: var(--teal);
+      transform: translateY(-4px) scale(1.1);
+    }
     .footer-bottom {
       text-align: center;
       padding-top: 2rem;
@@ -446,7 +631,6 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-actions">
-    <!-- Link to your Resume_.pdf file -->
     <a href="Resume_.pdf" class="btn-cv" download>📄 Download CV</a>
   </div>
 </nav>
@@ -471,20 +655,20 @@
 
 <!-- ABOUT -->
 <section id="about">
-  <p class="section-label">About Me</p>
-  <h2>Frontend-Focused Developer &amp; Educator</h2>
+  <p class="section-label animate-on-scroll">About Me</p>
+  <h2 class="animate-on-scroll delay-1">Frontend-Focused Developer &amp; Educator</h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>I'm a frontend-focused web developer currently working at <strong>Kaab Technology</strong> in Karachi, where I build and maintain responsive websites and web applications from frontend to backend.</p>
-      <p>I started my tech journey studying Computer Science and later completed a <strong>Higher Diploma in Software Engineering</strong> from Aptech, while pursuing a <strong>Bachelor's in Software Engineering</strong> from Virtual University of Pakistan.</p>
-      <p>Before software development, I spent nearly two years teaching Computer Studies to students from Grade 4 to Matric — which gave me a deep appreciation for clarity, communication, and breaking down complex concepts.</p>
+      <p class="animate-on-scroll delay-2">I'm a frontend-focused web developer currently working at <strong>Kaab Technology</strong> in Karachi, where I build and maintain responsive websites and web applications from frontend to backend.</p>
+      <p class="animate-on-scroll delay-3">I started my tech journey studying Computer Science and later completed a <strong>Higher Diploma in Software Engineering</strong> from Aptech, while pursuing a <strong>Bachelor's in Software Engineering</strong> from Virtual University of Pakistan.</p>
+      <p class="animate-on-scroll delay-4">Before software development, I spent nearly two years teaching Computer Studies to students from Grade 4 to Matric — which gave me a deep appreciation for clarity, communication, and breaking down complex concepts.</p>
     </div>
     <div>
       <div class="about-stats">
-        <div class="stat-card"><div class="stat-number">1+</div><div class="stat-label">Year Professional Dev</div></div>
-        <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Years Teaching</div></div>
-        <div class="stat-card"><div class="stat-number">5+</div><div class="stat-label">Tech Stack</div></div>
-        <div class="stat-card"><div class="stat-number">F.B</div><div class="stat-label">Area, Karachi</div></div>
+        <div class="stat-card animate-on-scroll delay-2"><div class="stat-number">1+</div><div class="stat-label">Year Professional Dev</div></div>
+        <div class="stat-card animate-on-scroll delay-3"><div class="stat-number">2</div><div class="stat-label">Years Teaching</div></div>
+        <div class="stat-card animate-on-scroll delay-4"><div class="stat-number">5+</div><div class="stat-label">Tech Stack</div></div>
+        <div class="stat-card animate-on-scroll delay-5"><div class="stat-number">F.B</div><div class="stat-label">Area, Karachi</div></div>
       </div>
     </div>
   </div>
@@ -494,31 +678,29 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <p class="section-label">Technical Skills</p>
-  <h2>What I Work With</h2>
-  <p class="section-intro">A mix of frontend, backend, and tools I use day-to-day in professional projects.</p>
+  <p class="section-label animate-on-scroll">Technical Skills</p>
+  <h2 class="animate-on-scroll delay-1">What I Work With</h2>
+  <p class="section-intro animate-on-scroll delay-2">A mix of frontend, backend, and tools I use day-to-day in professional projects.</p>
   <div class="skills-grid">
-    <div class="skill-category"><h3>Frontend</h3><div class="skill-tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">Bootstrap</span><span class="tag">Responsive</span></div></div>
-    <div class="skill-category"><h3>Backend</h3><div class="skill-tags"><span class="tag">PHP</span><span class="tag">C#</span><span class="tag">ASP.NET</span></div></div>
-    <div class="skill-category"><h3>Databases</h3><div class="skill-tags"><span class="tag">MySQL</span><span class="tag">SQL Server</span></div></div>
-    <div class="skill-category"><h3>Tools & Office</h3><div class="skill-tags"><span class="tag">MS Word</span><span class="tag">Excel</span><span class="tag">PowerPoint</span><span class="tag">Bug Fixing</span><span class="tag">Testing</span></div></div>
-    <div class="skill-category"><h3>Soft Skills</h3><div class="skill-tags"><span class="tag">Quick Learner</span><span class="tag">Multitasking</span><span class="tag">Problem Solving</span><span class="tag">Team Collab</span><span class="tag">Communication</span></div></div>
-    <div class="skill-category"><h3>Languages</h3><div class="skill-tags"><span class="tag">English</span><span class="tag">Urdu</span></div></div>
+    <div class="skill-category animate-on-scroll delay-1"><h3>Frontend</h3><div class="skill-tags"><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span><span class="tag">Bootstrap</span><span class="tag">Responsive</span></div></div>
+    <div class="skill-category animate-on-scroll delay-2"><h3>Backend</h3><div class="skill-tags"><span class="tag">PHP</span><span class="tag">C#</span><span class="tag">ASP.NET</span></div></div>
+    <div class="skill-category animate-on-scroll delay-3"><h3>Databases</h3><div class="skill-tags"><span class="tag">MySQL</span><span class="tag">SQL Server</span></div></div>
+    <div class="skill-category animate-on-scroll delay-1"><h3>Tools & Office</h3><div class="skill-tags"><span class="tag">MS Word</span><span class="tag">Excel</span><span class="tag">PowerPoint</span><span class="tag">Bug Fixing</span><span class="tag">Testing</span></div></div>
+    <div class="skill-category animate-on-scroll delay-2"><h3>Soft Skills</h3><div class="skill-tags"><span class="tag">Quick Learner</span><span class="tag">Multitasking</span><span class="tag">Problem Solving</span><span class="tag">Team Collab</span><span class="tag">Communication</span></div></div>
+    <div class="skill-category animate-on-scroll delay-3"><h3>Languages</h3><div class="skill-tags"><span class="tag">English</span><span class="tag">Urdu</span></div></div>
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- PROJECTS (with placeholder images and real links) -->
+<!-- PROJECTS -->
 <section id="projects">
-  <p class="section-label">Projects</p>
-  <h2>My Work</h2>
-  <p class="section-intro">Live projects I've built or contributed to. Click the links to explore.</p>
+  <p class="section-label animate-on-scroll">Projects</p>
+  <h2 class="animate-on-scroll delay-1">My Work</h2>
+  <p class="section-intro animate-on-scroll delay-2">Live projects I've built or contributed to. Click the links to explore.</p>
   <div class="projects-grid">
-    <!-- Project 1 -->
-    <div class="project-card">
+    <div class="project-card animate-on-scroll delay-1">
       <div class="project-media">
-        <!-- Replace src with your actual screenshot -->
         <img src="https://via.placeholder.com/600x400/1a2e45/3ecfcf?text=WorkSeekerX" alt="WorkSeekerX preview" />
       </div>
       <div class="project-body">
@@ -529,8 +711,7 @@
         <div class="project-links"><a href="https://workseekerx.com/" target="_blank" class="link-btn link-live">Live Demo</a></div>
       </div>
     </div>
-    <!-- Project 2 -->
-    <div class="project-card">
+    <div class="project-card animate-on-scroll delay-2">
       <div class="project-media">
         <img src="https://via.placeholder.com/600x400/1a2e45/3ecfcf?text=MZ+Tech+AI" alt="MZ Tech AI preview" />
       </div>
@@ -542,8 +723,7 @@
         <div class="project-links"><a href="http://mztechai.com/" target="_blank" class="link-btn link-live">Live Demo</a></div>
       </div>
     </div>
-    <!-- Project 3 -->
-    <div class="project-card">
+    <div class="project-card animate-on-scroll delay-3">
       <div class="project-media">
         <img src="https://via.placeholder.com/600x400/1a2e45/3ecfcf?text=Studio+Web+Mentors" alt="Studio Web Mentors preview" />
       </div>
@@ -555,8 +735,7 @@
         <div class="project-links"><a href="https://studiowebmentors.com/" target="_blank" class="link-btn link-live">Live Demo</a></div>
       </div>
     </div>
-    <!-- Project 4 -->
-    <div class="project-card">
+    <div class="project-card animate-on-scroll delay-4">
       <div class="project-media">
         <img src="https://via.placeholder.com/600x400/1a2e45/3ecfcf?text=LagunaVibe" alt="LagunaVibe preview" />
       </div>
@@ -575,11 +754,11 @@
 
 <!-- EXPERIENCE -->
 <section id="experience">
-  <p class="section-label">Work Experience</p>
-  <h2>Where I've Worked</h2>
+  <p class="section-label animate-on-scroll">Work Experience</p>
+  <h2 class="animate-on-scroll delay-1">Where I've Worked</h2>
   <div class="timeline">
-    <div class="timeline-item"><div class="timeline-date">Nov 2025<br/>Present</div><div class="timeline-dot"></div><div class="timeline-content"><h3>Frontend-Focused Web Developer</h3><div class="timeline-company">Kaab Technology, Karachi</div><ul><li>Build and maintain responsive websites using HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</li><li>Implement features, fix frontend/backend bugs, test and optimize</li><li>Manage tasks independently with timely delivery</li><li>Improve UX through design and performance enhancements</li></ul></div></div>
-    <div class="timeline-item"><div class="timeline-date">Sep 2023<br/>May 2025</div><div class="timeline-dot"></div><div class="timeline-content"><h3>Computer Studies Teacher</h3><div class="timeline-company">Dadi Secondary School, Karachi</div><ul><li>Taught Grade 4–Matric: MS Office, internet skills, basic programming</li><li>Managed computer lab and technical support</li><li>Prepared lessons, assignments, assessments</li><li>Developed digital literacy in students</li></ul></div></div>
+    <div class="timeline-item animate-on-scroll delay-2"><div class="timeline-date">Nov 2025<br/>Present</div><div class="timeline-dot"></div><div class="timeline-content"><h3>Frontend-Focused Web Developer</h3><div class="timeline-company">Kaab Technology, Karachi</div><ul><li>Build and maintain responsive websites using HTML, CSS, JavaScript, Bootstrap, PHP, MySQL</li><li>Implement features, fix frontend/backend bugs, test and optimize</li><li>Manage tasks independently with timely delivery</li><li>Improve UX through design and performance enhancements</li></ul></div></div>
+    <div class="timeline-item animate-on-scroll delay-3"><div class="timeline-date">Sep 2023<br/>May 2025</div><div class="timeline-dot"></div><div class="timeline-content"><h3>Computer Studies Teacher</h3><div class="timeline-company">Dadi Secondary School, Karachi</div><ul><li>Taught Grade 4–Matric: MS Office, internet skills, basic programming</li><li>Managed computer lab and technical support</li><li>Prepared lessons, assignments, assessments</li><li>Developed digital literacy in students</li></ul></div></div>
   </div>
 </section>
 
@@ -587,14 +766,14 @@
 
 <!-- EDUCATION -->
 <section id="education">
-  <p class="section-label">Education</p>
-  <h2>Academic Background</h2>
+  <p class="section-label animate-on-scroll">Education</p>
+  <h2 class="animate-on-scroll delay-1">Academic Background</h2>
   <div class="edu-grid">
-    <div class="edu-card"><div class="degree">Bachelor's in Software Engineering</div><div class="institution">Virtual University of Pakistan</div><div class="period">Sep 2024 – Present</div></div>
-    <div class="edu-card"><div class="degree">Higher Diploma in Software Engineering</div><div class="institution">Aptech, F.B Area, Karachi</div><div class="period">Jul 2023 – Jul 2025</div></div>
-    <div class="edu-card"><div class="degree">Pre-Engineering, Intermediate</div><div class="institution">Govt. Degree Science & Commerce College, Block 16</div><div class="period">Nov 2021 – Jun 2023</div></div>
-    <div class="edu-card"><div class="degree">Computer Science, Matriculation</div><div class="institution">New City Grammar School, Karachi</div><div class="period">Sep 2009 – Apr 2021</div></div>
-    <div class="edu-card"><div class="degree">English Language Course</div><div class="institution">Al-Hidayah Institute, Karachi</div><div class="period">Oct 2021 – Dec 2021</div></div>
+    <div class="edu-card animate-on-scroll delay-1"><div class="degree">Bachelor's in Software Engineering</div><div class="institution">Virtual University of Pakistan</div><div class="period">Sep 2024 – Present</div></div>
+    <div class="edu-card animate-on-scroll delay-2"><div class="degree">Higher Diploma in Software Engineering</div><div class="institution">Aptech, F.B Area, Karachi</div><div class="period">Jul 2023 – Jul 2025</div></div>
+    <div class="edu-card animate-on-scroll delay-3"><div class="degree">Pre-Engineering, Intermediate</div><div class="institution">Govt. Degree Science & Commerce College, Block 16</div><div class="period">Nov 2021 – Jun 2023</div></div>
+    <div class="edu-card animate-on-scroll delay-1"><div class="degree">Computer Science, Matriculation</div><div class="institution">New City Grammar School, Karachi</div><div class="period">Sep 2009 – Apr 2021</div></div>
+    <div class="edu-card animate-on-scroll delay-2"><div class="degree">English Language Course</div><div class="institution">Al-Hidayah Institute, Karachi</div><div class="period">Oct 2021 – Dec 2021</div></div>
   </div>
 </section>
 
@@ -602,9 +781,9 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <p class="section-label">Contact</p>
-  <h2>Let's Connect</h2>
-  <div class="contact-card">
+  <p class="section-label animate-on-scroll">Contact</p>
+  <h2 class="animate-on-scroll delay-1">Let's Connect</h2>
+  <div class="contact-card animate-on-scroll delay-2">
     <p style="color:var(--muted); margin-bottom:0.5rem;">
       Open to frontend-focused web developer roles in Karachi — Gulshan, F.B Area, Shahrah-e-Faisal, and nearby areas.
     </p>
@@ -642,7 +821,6 @@
     </div>
     <div class="footer-col">
       <h4>Contact</h4>
-      
       <p>Block 14, F.B Area, Karachi</p>
       <a href="mailto:iqrawaseem299@gmail.com">iqrawaseem299@gmail.com</a>
       <a href="tel:+923340239903">+92 334 0239903</a>
@@ -660,6 +838,36 @@
     &copy; 2025 Iqra Waseem · Frontend-Focused Web Developer · Karachi, Pakistan
   </div>
 </footer>
+
+<script>
+  // Intersection Observer for scroll animations
+  document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -30px 0px'
+    });
+
+    elements.forEach(el => observer.observe(el));
+
+    // Add a subtle parallax effect to hero bg
+    const heroBg = document.querySelector('.hero-bg');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      if (heroBg) {
+        heroBg.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
