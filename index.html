@@ -594,12 +594,68 @@
       color: var(--muted);
       font-size: 0.8rem;
     }
+    .menu-toggle{
+    display:none;
+    font-size:30px;
+    color:var(--white);
+    cursor:pointer;
+    user-select:none;
+}
 
+.mobile-cv{
+    display:none;
+}
+@media (max-width:820px){
+
+    nav{
+        height:70px;
+        justify-content:space-between;
+        flex-wrap:nowrap;
+        position:fixed;
+    }
+
+    .menu-toggle{
+        display:block;
+    }
+
+    .nav-actions{
+        display:none;
+    }
+
+    .mobile-cv{
+        display:block;
+        margin-top:15px;
+    }
+
+    .nav-links{
+
+        position:absolute;
+        top:70px;
+        left:0;
+        width:100%;
+
+        background:var(--navy);
+
+        flex-direction:column;
+
+        gap:18px;
+
+        padding:25px;
+
+        display:none;
+
+        border-top:1px solid var(--border);
+
+        animation:fadeIn .3s ease;
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
+
+}
     /* ── RESPONSIVE ── */
     @media (max-width: 820px) {
-      nav { flex-wrap: wrap; height: auto; padding: 10px 5%; gap: 0.5rem; }
-      .nav-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
-      .nav-actions { margin-left: 0; }
       .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       .timeline-item { grid-template-columns: 1fr; }
       .timeline-item::before { display: none; }
@@ -622,17 +678,27 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Iqra Waseem</div>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <div class="nav-actions">
-    <a href="Resume_.pdf" class="btn-cv" download>📄 Download CV</a>
-  </div>
+    <div class="nav-logo">Iqra Waseem</div>
+
+    <div class="menu-toggle" id="menu-toggle">
+        ☰
+    </div>
+
+    <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+
+        <li class="mobile-cv">
+            <a href="Resume_.pdf" download class="btn-cv">📄 Download CV</a>
+        </li>
+    </ul>
+
+    <div class="nav-actions">
+        <a href="Resume_.pdf" class="btn-cv" download>📄 Download CV</a>
+    </div>
 </nav>
 
 <!-- HERO -->
@@ -881,6 +947,18 @@ Frontend-focused Web Developer at Kaab Technology, Karachi.</p>
       }
     });
   });
+  const menuToggle = document.getElementById("menu-toggle");
+const navLinks = document.getElementById("nav-links");
+
+menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+});
+
+  document.querySelectorAll(".nav-links a").forEach(link=>{
+    link.addEventListener("click",()=>{
+        navLinks.classList.remove("active");
+    });
+});
 </script>
 
 </body>
